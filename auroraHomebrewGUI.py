@@ -85,7 +85,7 @@ def finish_close():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Spell Creator v1.0")
+root.title("Aurora Homebrew GUI v1.0")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
