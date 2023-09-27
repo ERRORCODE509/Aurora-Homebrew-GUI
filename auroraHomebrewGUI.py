@@ -137,9 +137,6 @@ source_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 classes_label = ttk.Label(spellCore, text="Classes")
 classes_label.grid(row=2, column=0, sticky="w")
 
-# Predefined width for checkboxes
-checkbox_width = 12
-
 class_checkboxes = [
     ("Artificer", artificer),
     ("Bard", bard),
@@ -152,7 +149,7 @@ class_checkboxes = [
     ("Wizard", wizard)
 ]
 for i, (class_name, class_var) in enumerate(class_checkboxes):
-    checkbox = tk.Checkbutton(spellCore, text=class_name, variable=class_var, width=checkbox_width)
+    checkbox = tk.Checkbutton(spellCore, text=class_name, variable=class_var, width=12)
     checkbox.grid(row=2, column=i + 1, sticky="w")
     checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
 
