@@ -1,5 +1,3 @@
-# All code contained herewithin was written by ERROR_CODE 509, with assistance from ChatGPT.
-
 import tkinter as tk
 from tkinter import ttk
 
