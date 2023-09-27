@@ -1,7 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
+import os
 
 def save_spell():
+    spell_path = "spells.xml"
+    import os
+    if os.path.exists(spell_path):
+        footer_exists = "</elements>"
+        with open('spells.xml', 'r') as file:
+            lines = file.readlines()
+        if lines and lines[-1].strip() == footer_exists:
+            with open('temp.txt', 'w') as temp_file:
+                temp_file.writelines(lines[:-1])
+            import os
+            os.replace('temp.txt', 'spells.xml')
     source_sanitized = source_entry.get()
     source_sanitized = source_sanitized.replace(" ", "_")
     source_sanitized = source_sanitized.replace("\'", "")
