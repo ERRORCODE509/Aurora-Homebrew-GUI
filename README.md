@@ -4,3 +4,5 @@ A (really) simple program written in Python that allows users to generate homebr
 Requires Python 3.11 and Tkinter.
 
 ![Screenshot](https://raw.githubusercontent.com/ERRORCODE509/Aurora-Homebrew-GUI/main/Screenshot%202023-09-26%20150437.png)
+
+Report bugs and make suggestions in the issue tracker.
