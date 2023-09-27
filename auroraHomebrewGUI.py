@@ -83,7 +83,7 @@ def finish_close():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.0")
+root.title("Aurora Homebrew GUI v1.1")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -112,22 +112,28 @@ level.set(0)
 main_frame = ttk.Frame(root)
 main_frame.pack(padx=20, pady=20)
 
+# Create the labelFrames
+spellCore = ttk.LabelFrame(main_frame, text="Spell Content")
+spellCore.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+spellHeader = ttk.LabelFrame(main_frame, text="Header Info")
+spellHeader.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+
 # Name Entry
-name_label = ttk.Label(main_frame, text="Name")
+name_label = ttk.Label(spellCore, text="Name")
 name_label.grid(row=0, column=0, sticky="w")
-name_entry = ttk.Entry(main_frame)
+name_entry = ttk.Entry(spellCore)
 name_entry.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 name_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Source Entry
-source_label = ttk.Label(main_frame, text="Source")
+source_label = ttk.Label(spellCore, text="Source")
 source_label.grid(row=1, column=0, sticky="w")
-source_entry = ttk.Entry(main_frame)
+source_entry = ttk.Entry(spellCore)
 source_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 source_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Checkboxes for Classes
-classes_label = ttk.Label(main_frame, text="Classes")
+classes_label = ttk.Label(spellCore, text="Classes")
 classes_label.grid(row=2, column=0, sticky="w")
 
 # Predefined width for checkboxes
@@ -145,104 +151,104 @@ class_checkboxes = [
     ("Wizard", wizard)
 ]
 for i, (class_name, class_var) in enumerate(class_checkboxes):
-    checkbox = tk.Checkbutton(main_frame, text=class_name, variable=class_var, width=checkbox_width)
+    checkbox = tk.Checkbutton(spellCore, text=class_name, variable=class_var, width=checkbox_width)
     checkbox.grid(row=2, column=i + 1, sticky="w")
     checkbox.bind("<ButtonRelease-1>", lambda event: update_save_button_state())
 
 # Description Text Entry
-description_label = ttk.Label(main_frame, text="Description")
+description_label = ttk.Label(spellCore, text="Description")
 description_label.grid(row=3, column=0, sticky="w")
-description_entry = tk.Text(main_frame, height=5, width=40)
+description_entry = tk.Text(spellCore, height=5, width=40)
 description_entry.grid(row=3, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 description_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Level Slider
-level_label = tk.Label(main_frame, text="Level")
+level_label = tk.Label(spellCore, text="Level")
 level_label.grid(row=4, column=0, sticky="w")
-level_slider = tk.Scale(main_frame, from_=0, to=9, orient="horizontal", variable=level)
+level_slider = tk.Scale(spellCore, from_=0, to=9, orient="horizontal", variable=level)
 level_slider.grid(row=4, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 
 # School Dropdown
-school_label = ttk.Label(main_frame, text="School")
+school_label = ttk.Label(spellCore, text="School")
 school_label.grid(row=5, column=0, sticky="w")
 school_options = ["Abjuration", "Conjuration", "Divination", "Enchantment", "Evocation", "Illusion", "Necromancy", "Transmutation"]
-school_combobox = ttk.Combobox(main_frame, state="readonly", values=school_options)
+school_combobox = ttk.Combobox(spellCore, state="readonly", values=school_options)
 school_combobox.grid(row=5, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 school_combobox.bind("<<ComboboxSelected>>", lambda event: update_save_button_state())
 
 # Casting Time Entry
-casting_time_label = ttk.Label(main_frame, text="Casting Time")
+casting_time_label = ttk.Label(spellCore, text="Casting Time")
 casting_time_label.grid(row=6, column=0, sticky="w")
-casting_time_entry = ttk.Entry(main_frame)
+casting_time_entry = ttk.Entry(spellCore)
 casting_time_entry.grid(row=6, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 casting_time_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Concentration and Ritual Checkboxes
-concentration_checkbox = tk.Checkbutton(main_frame, text="Concentration", variable=concentration)
+concentration_checkbox = tk.Checkbutton(spellCore, text="Concentration", variable=concentration)
 concentration_checkbox.grid(row=7, column=0, sticky="w")
 concentration_checkbox.bind("<ButtonRelease-1>", lambda event: update_save_button_state())
 
-ritual_checkbox = tk.Checkbutton(main_frame, text="Ritual", variable=ritual)
+ritual_checkbox = tk.Checkbutton(spellCore, text="Ritual", variable=ritual)
 ritual_checkbox.grid(row=7, column=1, sticky="w")
 ritual_checkbox.bind("<ButtonRelease-1>", lambda event: update_save_button_state())
 
 # Duration Entry
-duration_label = ttk.Label(main_frame, text="Duration")
+duration_label = ttk.Label(spellCore, text="Duration")
 duration_label.grid(row=8, column=0, sticky="w")
-duration_entry = ttk.Entry(main_frame)
+duration_entry = ttk.Entry(spellCore)
 duration_entry.grid(row=8, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 duration_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Range Entry
-range_label = ttk.Label(main_frame, text="Range")
+range_label = ttk.Label(spellCore, text="Range")
 range_label.grid(row=9, column=0, sticky="w")
-range_entry = ttk.Entry(main_frame)
+range_entry = ttk.Entry(spellCore)
 range_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 range_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Verbal, Somatic, and Material Checkboxes
-verbal_checkbox = tk.Checkbutton(main_frame, text="Verbal", variable=verbal)
+verbal_checkbox = tk.Checkbutton(spellCore, text="Verbal", variable=verbal)
 verbal_checkbox.grid(row=10, column=0, sticky="w")
 
-somatic_checkbox = tk.Checkbutton(main_frame, text="Somatic", variable=somatic)
+somatic_checkbox = tk.Checkbutton(spellCore, text="Somatic", variable=somatic)
 somatic_checkbox.grid(row=10, column=1, sticky="w")
 
-material_checkbox = tk.Checkbutton(main_frame, text="Material", variable=material, command=update_material_entry_state)
+material_checkbox = tk.Checkbutton(spellCore, text="Material", variable=material, command=update_material_entry_state)
 material_checkbox.grid(row=10, column=2, sticky="w")
 
 # Material Component Entry
-material_component_label = ttk.Label(main_frame, text="Material Component")
+material_component_label = ttk.Label(spellCore, text="Material Component")
 material_component_label.grid(row=11, column=0, sticky="w")
-material_component_entry = ttk.Entry(main_frame, state="normal" if material.get() else "disabled")
+material_component_entry = ttk.Entry(spellCore, state="normal" if material.get() else "disabled")
 material_component_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 material_component_entry.bind("<KeyRelease>", lambda event: update_save_button_state())
 
 # Save Button
-save_button = ttk.Button(main_frame, text="Save Spell", command=save_spell, state="disabled")
+save_button = ttk.Button(spellCore, text="Save Spell", command=save_spell, state="disabled")
 save_button.grid(row=12, column=0, columnspan=3, pady=10)
 
 # Finish Button
-finish_button = ttk.Button(main_frame, text="Finish & Close", command=finish_close)
+finish_button = ttk.Button(spellCore, text="Finish & Close", command=finish_close)
 finish_button.grid(row=12, column=1, columnspan=3, pady=10)
 
 # Version Entry
-version_label = ttk.Label(main_frame, text="Version")
+version_label = ttk.Label(spellHeader, text="Version")
 version_label.grid(row=14, column=0, sticky="w")
-version_entry = ttk.Entry(main_frame)
+version_entry = ttk.Entry(spellHeader)
 version_entry.grid(row=14, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 version_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
 
 # Source URL Entry (if applicable, obviously)
-source_url_label = ttk.Label(main_frame, text="Source URL")
+source_url_label = ttk.Label(spellHeader, text="Source URL")
 source_url_label.grid(row=15, column=0, sticky="w")
-source_url_entry = ttk.Entry(main_frame, state="normal" if source_exists.get() else "disabled")
+source_url_entry = ttk.Entry(spellHeader, state="normal" if source_exists.get() else "disabled")
 source_url_entry.grid(row=15, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 source_url_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
-source_exists_checkbox = tk.Checkbutton(main_frame, text="Has Online Source", variable=source_exists, command=update_source_url_entry_state)
+source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_source_url_entry_state)
 source_exists_checkbox.grid(row=15, column=2, sticky="w")
 
 # Header Insert Button
-header_button = ttk.Button(main_frame, text="Insert Header", command=insert_header, state="disabled")
+header_button = ttk.Button(spellHeader, text="Insert Header", command=insert_header, state="disabled")
 header_button.grid(row=16, column=0, columnspan=3, pady=10)
 
 # Start the main loop
