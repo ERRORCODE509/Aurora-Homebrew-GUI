@@ -12,7 +12,6 @@ def save_spell():
         if lines and lines[-1].strip() == footer_exists:
             with open('temp.txt', 'w') as temp_file:
                 temp_file.writelines(lines[:-1])
-            import os
             os.replace('temp.txt', 'spells.xml')
     source_sanitized = source_entry.get()
     source_sanitized = source_sanitized.replace(" ", "_")
