@@ -7,4 +7,4 @@ Requires Python 3.11 and Tkinter.
 
 ![Screenshot](https://raw.githubusercontent.com/ERRORCODE509/Aurora-Homebrew-GUI/main/screenshot.png)
 
-Report bugs and make suggestions in the issue tracker.
+Report bugs and make suggestions in the issue tracker. [There's also a project board if you want to track progress.](https://github.com/users/ERRORCODE509/projects/5)
