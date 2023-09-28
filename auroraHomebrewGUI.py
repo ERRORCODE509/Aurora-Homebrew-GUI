@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import os
+import tkinter.font as tkFont
 
 def save_spell():
     spell_path = "spells.xml"
@@ -17,23 +18,23 @@ def save_spell():
         with open(f"spells.xml", "a") as file:
             file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
             file.write("<elements>\n")
-    source_sanitized = source_entry.get()
-    source_sanitized = source_sanitized.replace(" ", "_")
-    source_sanitized = source_sanitized.replace("\'", "")
-    name_sanitized = name_entry.get()
-    name_sanitized = name_sanitized.replace(" ", "_")
-    name_sanitized = name_sanitized.replace("\'", "")
-    description_sanitized = description_entry.get('1.0', 'end-1c')
-    description_sanitized = description_sanitized.replace("\n", "</p>\n\t\t\t<p>")
+    spellSource_sanitized = spellSource_entry.get()
+    spellSource_sanitized = spellSource_sanitized.replace(" ", "_")
+    spellSource_sanitized = spellSource_sanitized.replace("\'", "")
+    spellName_sanitized = spellName_entry.get()
+    spellName_sanitized = spellName_sanitized.replace(" ", "_")
+    spellName_sanitized = spellName_sanitized.replace("\'", "")
+    spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
+    spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
     with open(f"spells.xml", "a") as file:
         classes_list = []
         for class_name, class_var in class_checkboxes:
             if class_var.get():
                 classes_list.append(class_name)
-        file.write(f"\t<element name=\"{name_entry.get()}\" type=\"Spell\" source=\"{source_entry.get()}\" id=\"id_{source_sanitized}_{name_sanitized}\">\n")
+        file.write(f"\t<element name=\"{spellName_entry.get()}\" type=\"Spell\" source=\"{spellSource_entry.get()}\" id=\"id_{spellSource_sanitized}_{spellName_sanitized}\">\n")
         file.write("\t\t<supports>" + ", ".join(classes_list) + "</supports>\n")
         file.write("\t\t<description>\n")
-        file.write(f"\t\t\t<p>{description_sanitized}</p>\n")
+        file.write(f"\t\t\t<p>{spellDescription_sanitized}</p>\n")
         file.write("\t\t</description>\n")
         file.write("\t\t<setters>\n")
         file.write(f"\t\t\t<set name=\"level\">{level.get()}</set>\n")
@@ -55,7 +56,7 @@ def save_spell():
         file.write("</elements>")
 
 def update_saveSpell_button_state():
-    required_fields = [name_entry.get(), source_entry.get(), description_entry.get("1.0", "end-1c"), school_combobox.get(), casting_time_entry.get(), duration_entry.get(), range_entry.get()]
+    required_fields = [spellName_entry.get(), spellSource_entry.get(), spellDescription_entry.get("1.0", "end-1c"), school_combobox.get(), casting_time_entry.get(), duration_entry.get(), range_entry.get()]
     if all(required_fields) and (not material.get() or material_component_entry.get()):
         if artificer.get() == 1 or bard.get() == 1 or cleric.get() == 1 or druid.get() == 1 or paladin.get() == 1 or ranger.get() == 1 or sorcerer.get() == 1 or warlock.get == 1 or wizard.get() == 1:
             save_button.config(state="normal")
@@ -80,7 +81,7 @@ def insert_header():
         file.write("\t\t</update>\n")
         file.write("\t<\info>\n")
 
-def update_source_entry_state():
+def update_spellSource_entry_state():
     source_url_entry_state = "normal" if source_exists.get() else "disabled"
     source_url_entry.config(state=source_url_entry_state)
     source_version_entry_state = "normal" if source_exists.get() else "disabled"
@@ -96,7 +97,7 @@ def update_header_button_state():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.3")
+root.title("Aurora Homebrew GUI v1.3.1")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -126,22 +127,22 @@ notebook = ttk.Notebook(root)
 notebook.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 spellCore = ttk.Frame(notebook)
 spellHeader = ttk.Frame(notebook)
-notebook.add(spellHeader, text="Source Header")
 notebook.add(spellCore, text="Spell")
+notebook.add(spellHeader, text="Source Header")
 
 # Name Entry
 name_label = ttk.Label(spellCore, text="Name")
 name_label.grid(row=0, column=0, sticky="w")
-name_entry = ttk.Entry(spellCore)
-name_entry.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-name_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+spellName_entry = ttk.Entry(spellCore)
+spellName_entry.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+spellName_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Source Entry
 source_label = ttk.Label(spellCore, text="Source")
 source_label.grid(row=1, column=0, sticky="w")
-source_entry = ttk.Entry(spellCore)
-source_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-source_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+spellSource_entry = ttk.Entry(spellCore)
+spellSource_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+spellSource_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Checkboxes for Classes
 classes_label = ttk.Label(spellCore, text="Classes")
@@ -167,9 +168,9 @@ for i, (class_name, class_var) in enumerate(class_checkboxes):
 # Description Text Entry
 description_label = ttk.Label(spellCore, text="Description")
 description_label.grid(row=3, column=0, sticky="w")
-description_entry = tk.Text(spellCore, height=5, width=40)
-description_entry.grid(row=3, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-description_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+spellDescription_entry = tk.Text(spellCore, height=5, width=40)
+spellDescription_entry.grid(row=3, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+spellDescription_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Level Slider
 level_label = tk.Label(spellCore, text="Level")
@@ -249,12 +250,19 @@ source_url_label.grid(row=1, column=0, sticky="w")
 source_url_entry = ttk.Entry(spellHeader, state="normal" if source_exists.get() else "disabled")
 source_url_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 source_url_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
-source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_source_entry_state)
+source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_spellSource_entry_state)
 source_exists_checkbox.grid(row=0, column=3, sticky="w")
 
 # Header Insert Button
 header_button = ttk.Button(spellHeader, text="Add Header", command=insert_header, state="disabled")
-header_button.grid(row=16, column=0, columnspan=3, pady=10)
+header_button.grid(row=2, column=0, columnspan=3, pady=10)
+
+# Header warning label and italicized font
+default_font = tkFont.nametofont("TkDefaultFont")
+italicized_font = default_font.copy()
+italicized_font.configure(slant="italic")
+header_warning_label = ttk.Label(spellHeader, text="This header is only for online homebrew!", font=italicized_font, foreground="red")
+header_warning_label.grid(row=2, column=3, sticky="w")
 
 # Start the main loop
 root.mainloop()
