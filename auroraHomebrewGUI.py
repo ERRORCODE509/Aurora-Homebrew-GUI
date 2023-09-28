@@ -13,6 +13,10 @@ def save_spell():
             with open('temp.txt', 'w') as temp_file:
                 temp_file.writelines(lines[:-1])
             os.replace('temp.txt', 'spells.xml')
+    else:
+        with open(f"spells.xml", "a") as file:
+            file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
+            file.write("<elements>\n")
     source_sanitized = source_entry.get()
     source_sanitized = source_sanitized.replace(" ", "_")
     source_sanitized = source_sanitized.replace("\'", "")
@@ -48,6 +52,7 @@ def save_spell():
         file.write(f"\t\t\t<set name=\"isRitual\">{'true' if ritual.get() == 1 else 'false'}</set>\n")
         file.write("\t\t</setters>\n")
         file.write("\t</element>\n")
+        file.write("</elements>")
 
 def update_saveSpell_button_state():
     required_fields = [name_entry.get(), source_entry.get(), description_entry.get("1.0", "end-1c"), school_combobox.get(), casting_time_entry.get(), duration_entry.get(), range_entry.get()]
@@ -70,34 +75,28 @@ def insert_header():
         file.write("<elements>\n")
         file.write("\t<info>\n")
         file.write("\t\t<name>Spells</name>\n")
-        file.write(f"\t\t<update version=\"{version_entry.get()}\">\n")
-        if source_exists.get() == 1:
-            file.write(f"\t\t\t<file name=\"spells.xml\" url=\"{source_url_entry.get()}\" />\n")
-        else:
-            file.write(f"\t\t\t<file name=\"spells.xml\" url=\"127.0.0.1\" />\n")
+        file.write(f"\t\t<update version=\"{source_version_entry.get()}\">\n")
+        file.write(f"\t\t\t<file name=\"spells.xml\" url=\"{source_url_entry.get()}\" />\n")
         file.write("\t\t</update>\n")
         file.write("\t<\info>\n")
 
-def update_source_url_entry_state():
+def update_source_entry_state():
     source_url_entry_state = "normal" if source_exists.get() else "disabled"
     source_url_entry.config(state=source_url_entry_state)
+    source_version_entry_state = "normal" if source_exists.get() else "disabled"
+    source_version_entry.config(state=source_version_entry_state)
     update_header_button_state()
 
 def update_header_button_state():
-    header_required_fields = [version_entry.get()]
+    header_required_fields = [source_version_entry.get()]
     if all(header_required_fields) and (not source_exists.get() or source_url_entry.get()):
         header_button.config(state="normal")
     else:
         header_button.config(state="disabled")
 
-def finish_close():
-    with open(f"spells.xml", "a") as file:
-        file.write("</elements>")
-    root.destroy()
-
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.2")
+root.title("Aurora Homebrew GUI v1.3")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -127,8 +126,8 @@ notebook = ttk.Notebook(root)
 notebook.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 spellCore = ttk.Frame(notebook)
 spellHeader = ttk.Frame(notebook)
+notebook.add(spellHeader, text="Source Header")
 notebook.add(spellCore, text="Spell")
-notebook.add(spellHeader, text="Header")
 
 # Name Entry
 name_label = ttk.Label(spellCore, text="Name")
@@ -234,31 +233,27 @@ material_component_entry.grid(row=11, column=1, columnspan=2, padx=10, pady=5, s
 material_component_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Save Button
-save_button = ttk.Button(spellCore, text="Save Spell", command=save_spell, state="disabled")
+save_button = ttk.Button(spellCore, text="Add Spell", command=save_spell, state="disabled")
 save_button.grid(row=12, column=0, columnspan=3, pady=10)
 
-# Finish Button
-finish_button = ttk.Button(spellCore, text="Finish & Close", command=finish_close)
-finish_button.grid(row=12, column=1, columnspan=3, pady=10)
-
 # Version Entry
-version_label = ttk.Label(spellHeader, text="Version")
-version_label.grid(row=14, column=0, sticky="w")
-version_entry = ttk.Entry(spellHeader)
-version_entry.grid(row=14, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-version_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
+source_version_label = ttk.Label(spellHeader, text="Version")
+source_version_label.grid(row=0, column=0, sticky="w")
+source_version_entry = ttk.Entry(spellHeader, state="normal" if source_exists.get() else "disabled")
+source_version_entry.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+source_version_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
 
 # Source URL Entry (if applicable, obviously)
 source_url_label = ttk.Label(spellHeader, text="Source URL")
-source_url_label.grid(row=15, column=0, sticky="w")
+source_url_label.grid(row=1, column=0, sticky="w")
 source_url_entry = ttk.Entry(spellHeader, state="normal" if source_exists.get() else "disabled")
-source_url_entry.grid(row=15, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+source_url_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 source_url_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
-source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_source_url_entry_state)
-source_exists_checkbox.grid(row=15, column=2, sticky="w")
+source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_source_entry_state)
+source_exists_checkbox.grid(row=0, column=3, sticky="w")
 
 # Header Insert Button
-header_button = ttk.Button(spellHeader, text="Insert Header", command=insert_header, state="disabled")
+header_button = ttk.Button(spellHeader, text="Add Header", command=insert_header, state="disabled")
 header_button.grid(row=16, column=0, columnspan=3, pady=10)
 
 # Start the main loop
