@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 import os
 import tkinter.font as tkFont
+from tkinter import filedialog
 
 def save_spell():
-    spell_path = "spells.xml"
+    spell_path = output_path.get() + "\\spells.xml"
     import os
     if os.path.exists(spell_path):
         footer_exists = "</elements>"
@@ -15,7 +16,7 @@ def save_spell():
                 temp_file.writelines(lines[:-1])
             os.replace('temp.txt', 'spells.xml')
     else:
-        with open(f"spells.xml", "a") as file:
+        with open(f"{output_path.get()}\\spells.xml", "a") as file:
             file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
             file.write("<elements>\n")
     spellSource_sanitized = spellSource_entry.get()
@@ -26,7 +27,7 @@ def save_spell():
     spellName_sanitized = spellName_sanitized.replace("\'", "")
     spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
     spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
-    with open(f"spells.xml", "a") as file:
+    with open(f"{output_path.get()}\\spells.xml", "a") as file:
         classes_list = []
         for class_name, class_var in class_checkboxes:
             if class_var.get():
@@ -59,7 +60,10 @@ def update_saveSpell_button_state():
     required_fields = [spellName_entry.get(), spellSource_entry.get(), spellDescription_entry.get("1.0", "end-1c"), school_combobox.get(), casting_time_entry.get(), duration_entry.get(), range_entry.get()]
     if all(required_fields) and (not material.get() or material_component_entry.get()):
         if artificer.get() == 1 or bard.get() == 1 or cleric.get() == 1 or druid.get() == 1 or paladin.get() == 1 or ranger.get() == 1 or sorcerer.get() == 1 or warlock.get == 1 or wizard.get() == 1:
-            save_button.config(state="normal")
+            if output_path.get():
+                save_button.config(state="normal")
+            else:
+                save_button.config(state="disabled")
         else:
             save_button.config(state="disabled")
     else:
@@ -95,9 +99,18 @@ def update_header_button_state():
     else:
         header_button.config(state="disabled")
 
+def select_folder():
+    global output_path
+    folder_path = filedialog.askdirectory()
+    if folder_path:
+        output_path.set(folder_path)
+    folder_path_label.config(text=output_path)
+    update_saveSpell_button_state()
+
+
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.3.1")
+root.title("Aurora Homebrew GUI v1.4")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -121,6 +134,9 @@ source_exists = tk.IntVar()
 # Create a variable for the level
 level = tk.IntVar()
 level.set(0)
+
+# Create a StringVar to store the output folder path
+output_path = tk.StringVar()
 
 # Create the Notebook and its frames
 notebook = ttk.Notebook(root)
@@ -235,7 +251,13 @@ material_component_entry.bind("<KeyRelease>", lambda event: update_saveSpell_but
 
 # Save Button
 save_button = ttk.Button(spellCore, text="Add Spell", command=save_spell, state="disabled")
-save_button.grid(row=12, column=0, columnspan=3, pady=10)
+save_button.grid(row=12, column=1, pady=10)
+
+# Output selection button and path label
+output_button = ttk.Button(spellCore, text="Output Path", command=select_folder)
+output_button.grid(row=12, column=2, pady=10)
+folder_path_label = ttk.Label(spellCore, textvariable=output_path)
+folder_path_label.grid(row=12, column=3, pady=10)
 
 # Version Entry
 source_version_label = ttk.Label(spellHeader, text="Version")
