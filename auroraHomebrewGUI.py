@@ -9,7 +9,7 @@ def save_spell():
     import os
     if os.path.exists(spell_path):
         footer_exists = "</elements>"
-        with open('spells.xml', 'r') as file:
+        with open('spells.xml', 'r', encoding="utf-8") as file:
             lines = file.readlines()
         if lines and lines[-1].strip() == footer_exists:
             with open('temp.txt', 'w') as temp_file:
@@ -27,7 +27,7 @@ def save_spell():
     spellName_sanitized = spellName_sanitized.replace("\'", "")
     spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
     spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
-    with open(f"{output_path.get()}\\spells.xml", "a") as file:
+    with open(f"{output_path.get()}\\spells.xml", "a", encoding="utf-8") as file:
         classes_list = []
         for class_name, class_var in class_checkboxes:
             if class_var.get():
@@ -75,7 +75,7 @@ def update_materialSpell_entry_state():
     update_saveSpell_button_state()
 
 def insert_header():
-    with open(f"spells.xml", "a") as file:
+    with open(f"spells.xml", "a", encoding="utf-8") as file:
         file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
         file.write("<elements>\n")
         file.write("\t<info>\n")
@@ -110,7 +110,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4")
+root.title("Aurora Homebrew GUI v1.4.1")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
