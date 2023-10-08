@@ -110,7 +110,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.1")
+root.title("Aurora Homebrew GUI v1.4.2")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -185,7 +185,7 @@ for i, (class_name, class_var) in enumerate(class_checkboxes):
 description_label = ttk.Label(spellCore, text="Description")
 description_label.grid(row=3, column=0, sticky="w")
 spellDescription_entry = tk.Text(spellCore, height=5, width=40)
-spellDescription_entry.grid(row=3, column=1, columnspan=2, padx=10, pady=5, sticky="w")
+spellDescription_entry.grid(row=3, column=1, columnspan=3, padx=10, pady=5, sticky="w")
 spellDescription_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Level Slider
