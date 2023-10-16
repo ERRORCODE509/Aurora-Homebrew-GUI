@@ -6,15 +6,16 @@ from tkinter import filedialog
 
 def save_spell():
     spell_path = output_path.get() + "\\spells.xml"
+    temp_directory = output_path.get() + "\\temp.txt"
     import os
     if os.path.exists(spell_path):
         footer_exists = "</elements>"
-        with open('spells.xml', 'r', encoding="utf-8") as file:
+        with open(spell_path, 'r', encoding="utf-8") as file:
             lines = file.readlines()
         if lines and lines[-1].strip() == footer_exists:
-            with open('temp.txt', 'w') as temp_file:
+            with open(temp_directory, 'w') as temp_file:
                 temp_file.writelines(lines[:-1])
-            os.replace('temp.txt', 'spells.xml')
+            os.replace(temp_directory, spell_path)
     else:
         with open(f"{output_path.get()}\\spells.xml", "a") as file:
             file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
@@ -110,7 +111,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.2")
+root.title("Aurora Homebrew GUI v1.4.3")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
