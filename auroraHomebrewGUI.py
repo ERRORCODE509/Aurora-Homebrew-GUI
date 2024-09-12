@@ -9,6 +9,20 @@ def save_spell():
     temp_directory = output_path.get() + "\\temp.txt"
     import os
     if os.path.exists(spell_path):
+        header_line1 = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n"
+        header_line2 = "<elements>\n"
+        with open(spell_path, 'r', encoding="utf-8") as file:
+            first_line = file.readline()
+            second_line = file.readline()
+            remaining_lines = file.readlines()
+        if first_line != header_line1 and second_line != header_line2:
+            lines = [header_line1, header_line2] + remaining_lines
+            with open(spell_path, 'w', encoding="utf-8") as file:
+                file.writelines(lines)
+        elif first_line != header_line1 and second_line == header_line2:
+            lines = header_line1 + remaining_lines
+            with open(spell_path, 'w', encoding="utf-8") as file:
+                file.writelines(lines)
         footer_exists = "</elements>"
         with open(spell_path, 'r', encoding="utf-8") as file:
             lines = file.readlines()
@@ -111,7 +125,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.3")
+root.title("Aurora Homebrew GUI v1.4.4")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
