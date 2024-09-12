@@ -122,10 +122,9 @@ def select_folder():
     folder_path_label.config(text=output_path)
     update_saveSpell_button_state()
 
-
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.4")
+root.title("Aurora Homebrew GUI v1.4.5")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -191,7 +190,7 @@ class_checkboxes = [
     ("Wizard", wizard)
 ]
 for i, (class_name, class_var) in enumerate(class_checkboxes):
-    checkbox = tk.Checkbutton(spellCore, text=class_name, variable=class_var, width=12)
+    checkbox = ttk.Checkbutton(spellCore, text=class_name, variable=class_var, width=12)
     checkbox.grid(row=2, column=i + 1, sticky="w")
     checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
 
@@ -204,7 +203,7 @@ spellDescription_entry.grid(row=3, column=1, columnspan=3, padx=10, pady=5, stic
 spellDescription_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Level Slider
-level_label = tk.Label(spellCore, text="Level")
+level_label = ttk.Label(spellCore, text="Level")
 level_label.grid(row=4, column=0, sticky="w")
 level_slider = tk.Scale(spellCore, from_=0, to=9, orient="horizontal", variable=level)
 level_slider.grid(row=4, column=1, columnspan=2, padx=10, pady=5, sticky="w")
@@ -225,11 +224,11 @@ casting_time_entry.grid(row=6, column=1, columnspan=2, padx=10, pady=5, sticky="
 casting_time_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Concentration and Ritual Checkboxes
-concentration_checkbox = tk.Checkbutton(spellCore, text="Concentration", variable=concentration)
+concentration_checkbox = ttk.Checkbutton(spellCore, text="Concentration", variable=concentration)
 concentration_checkbox.grid(row=7, column=0, sticky="w")
 concentration_checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
 
-ritual_checkbox = tk.Checkbutton(spellCore, text="Ritual", variable=ritual)
+ritual_checkbox = ttk.Checkbutton(spellCore, text="Ritual", variable=ritual)
 ritual_checkbox.grid(row=7, column=1, sticky="w")
 ritual_checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
 
@@ -248,13 +247,13 @@ range_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 range_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Verbal, Somatic, and Material Checkboxes
-verbal_checkbox = tk.Checkbutton(spellCore, text="Verbal", variable=verbal)
+verbal_checkbox = ttk.Checkbutton(spellCore, text="Verbal", variable=verbal)
 verbal_checkbox.grid(row=10, column=0, sticky="w")
 
-somatic_checkbox = tk.Checkbutton(spellCore, text="Somatic", variable=somatic)
+somatic_checkbox = ttk.Checkbutton(spellCore, text="Somatic", variable=somatic)
 somatic_checkbox.grid(row=10, column=1, sticky="w")
 
-material_checkbox = tk.Checkbutton(spellCore, text="Material", variable=material, command=update_materialSpell_entry_state)
+material_checkbox = ttk.Checkbutton(spellCore, text="Material", variable=material, command=update_materialSpell_entry_state)
 material_checkbox.grid(row=10, column=2, sticky="w")
 
 # Material Component Entry
@@ -287,7 +286,7 @@ source_url_label.grid(row=1, column=0, sticky="w")
 source_url_entry = ttk.Entry(spellHeader, state="normal" if source_exists.get() else "disabled")
 source_url_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 source_url_entry.bind("<KeyRelease>", lambda event: update_header_button_state())
-source_exists_checkbox = tk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_spellSource_entry_state)
+source_exists_checkbox = ttk.Checkbutton(spellHeader, text="Has Online Source", variable=source_exists, command=update_spellSource_entry_state)
 source_exists_checkbox.grid(row=0, column=3, sticky="w")
 
 # Header Insert Button
