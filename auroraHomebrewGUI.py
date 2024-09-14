@@ -3,7 +3,9 @@ from tkinter import ttk
 import os
 import tkinter.font as tkFont
 from tkinter import filedialog
+import xml.etree.ElementTree as ET
 
+# Function to add spells. Should probably break is up to make it less of a monolithic mess.
 def save_spell():
     spell_path = output_path.get() + "\\spells.xml"
     temp_directory = output_path.get() + "\\temp.txt"
@@ -71,6 +73,7 @@ def save_spell():
         file.write("\t</element>\n")
         file.write("</elements>")
 
+# Function to enable/disable "add spell" button
 def update_saveSpell_button_state():
     required_fields = [spellName_entry.get(), spellSource_entry.get(), spellDescription_entry.get("1.0", "end-1c"), school_combobox.get(), casting_time_entry.get(), duration_entry.get(), range_entry.get()]
     if all(required_fields) and (not material.get() or material_component_entry.get()):
@@ -84,11 +87,13 @@ def update_saveSpell_button_state():
     else:
         save_button.config(state="disabled")
 
+# Function to enable/disable material component entry
 def update_materialSpell_entry_state():
     material_component_entry_state = "normal" if material.get() else "disabled"
     material_component_entry.config(state=material_component_entry_state)
     update_saveSpell_button_state()
 
+# Function to add the online source header info
 def insert_header():
     with open(f"spells.xml", "a", encoding="utf-8") as file:
         file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
@@ -100,6 +105,7 @@ def insert_header():
         file.write("\t\t</update>\n")
         file.write("\t<\info>\n")
 
+# Function to allow online source info entry
 def update_spellSource_entry_state():
     source_url_entry_state = "normal" if source_exists.get() else "disabled"
     source_url_entry.config(state=source_url_entry_state)
@@ -107,6 +113,7 @@ def update_spellSource_entry_state():
     source_version_entry.config(state=source_version_entry_state)
     update_header_button_state()
 
+# Function to update the "add header" button
 def update_header_button_state():
     header_required_fields = [source_version_entry.get()]
     if all(header_required_fields) and (not source_exists.get() or source_url_entry.get()):
@@ -114,6 +121,7 @@ def update_header_button_state():
     else:
         header_button.config(state="disabled")
 
+# Folder selection function
 def select_folder():
     global output_path
     folder_path = filedialog.askdirectory()
