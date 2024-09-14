@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<elements>
+	<info>
+		<name>Spells</name>
+		<update version="v1.0">
+			<file name="spells.xml" url="http://127.0.0.1" />
+		</update>
+	<\info>
+	<element name="1" type="Spell" source="1" id="id_1_1">
+		<supports>Artificer</supports>
+		<description>
+			<p>1</p>
+		</description>
+		<setters>
+			<set name="level">2</set>
+			<set name="school">Abjuration</set>
+			<set name="time">1</set>
+			<set name="duration">1</set>
+			<set name="range">1</set>
+			<set name="hasVerbalComponent">true</set>
+			<set name="hasSomaticComponent">true</set>
+			<set name="hasMaterialComponent">true</set>
+			<set name="materialComponent">1</set>
+			<set name="isConcentration">true</set>
+			<set name="isRitual">true</set>
+		</setters>
+	</element>
+</elements>

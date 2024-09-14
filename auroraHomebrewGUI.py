@@ -103,7 +103,7 @@ def insert_header():
         file.write(f"\t\t<update version=\"{source_version_entry.get()}\">\n")
         file.write(f"\t\t\t<file name=\"spells.xml\" url=\"{source_url_entry.get()}\" />\n")
         file.write("\t\t</update>\n")
-        file.write("\t<\info>\n")
+        file.write("\t</info>\n")
 
 # Function to allow online source info entry
 def update_spellSource_entry_state():
