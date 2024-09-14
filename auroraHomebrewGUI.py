@@ -140,7 +140,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.6")
+root.title("Aurora Homebrew GUI v1.4.7")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
