@@ -5,7 +5,7 @@ import tkinter.font as tkFont
 from tkinter import filedialog
 import xml.etree.ElementTree as ET
 
-# Function to add spells. Should probably break is up to make it less of a monolithic mess.
+# Function to add spells. Should probably break this up to make it less of a monolithic mess.
 def save_spell():
     spell_path = output_path.get() + "\\spells.xml"
     temp_directory = output_path.get() + "\\temp.txt"
@@ -44,6 +44,12 @@ def save_spell():
     spellName_sanitized = spellName_sanitized.replace(" ", "_")
     spellName_sanitized = spellName_sanitized.replace("\'", "")
     spellName_sanitized = spellName_sanitized.upper()
+    spellAuthor_sanitized = spellAuthor_entry.get()
+    if spellAuthor_sanitized != "":
+        spellAuthor_sanitized = spellAuthor_sanitized + "_"
+        spellAuthor_sanitized = spellAuthor_sanitized.replace(" ", "_")
+        spellAuthor_sanitized = spellAuthor_sanitized.replace("\'", "")
+        spellAuthor_sanitized = spellAuthor_sanitized.upper()
     spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
     spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
     with open(f"{output_path.get()}\\spells.xml", "a", encoding="utf-8") as file:
@@ -51,7 +57,7 @@ def save_spell():
         for class_name, class_var in class_checkboxes:
             if class_var.get():
                 classes_list.append(class_name)
-        file.write(f"\t<element name=\"{spellName_entry.get()}\" type=\"Spell\" source=\"{spellSource_entry.get()}\" id=\"ID_{spellSource_sanitized}_SPELL_{spellName_sanitized}\">\n")
+        file.write(f"\t<element name=\"{spellName_entry.get()}\" type=\"Spell\" source=\"{spellSource_entry.get()}\" id=\"ID_{spellAuthor_sanitized}{spellSource_sanitized}_SPELL_{spellName_sanitized}\">\n")
         file.write("\t\t<supports>" + ", ".join(classes_list) + "</supports>\n")
         file.write("\t\t<description>\n")
         file.write(f"\t\t\t<p>{spellDescription_sanitized}</p>\n")
@@ -183,6 +189,12 @@ source_label.grid(row=1, column=0, sticky="w")
 spellSource_entry = ttk.Entry(spellCore)
 spellSource_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 spellSource_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+
+# Author entry
+author_label = ttk.Label(spellCore, text="Author (optional)")
+author_label.grid(row=1, column=3, sticky="w")
+spellAuthor_entry = ttk.Entry(spellCore)
+spellAuthor_entry.grid(row=1, column=4, columnspan=2, padx=10, pady=5, sticky="w")
 
 # Checkboxes for Classes
 classes_label = ttk.Label(spellCore, text="Classes")
