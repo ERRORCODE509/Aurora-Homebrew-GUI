@@ -39,9 +39,11 @@ def save_spell():
     spellSource_sanitized = spellSource_entry.get()
     spellSource_sanitized = spellSource_sanitized.replace(" ", "_")
     spellSource_sanitized = spellSource_sanitized.replace("\'", "")
+    spellSource_sanitized = spellSource_sanitized.upper()
     spellName_sanitized = spellName_entry.get()
     spellName_sanitized = spellName_sanitized.replace(" ", "_")
     spellName_sanitized = spellName_sanitized.replace("\'", "")
+    spellName_sanitized = spellName_sanitized.upper()
     spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
     spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
     with open(f"{output_path.get()}\\spells.xml", "a", encoding="utf-8") as file:
@@ -49,7 +51,7 @@ def save_spell():
         for class_name, class_var in class_checkboxes:
             if class_var.get():
                 classes_list.append(class_name)
-        file.write(f"\t<element name=\"{spellName_entry.get()}\" type=\"Spell\" source=\"{spellSource_entry.get()}\" id=\"id_{spellSource_sanitized}_{spellName_sanitized}\">\n")
+        file.write(f"\t<element name=\"{spellName_entry.get()}\" type=\"Spell\" source=\"{spellSource_entry.get()}\" id=\"ID_{spellSource_sanitized}_SPELL_{spellName_sanitized}\">\n")
         file.write("\t\t<supports>" + ", ".join(classes_list) + "</supports>\n")
         file.write("\t\t<description>\n")
         file.write(f"\t\t\t<p>{spellDescription_sanitized}</p>\n")
@@ -132,7 +134,7 @@ def select_folder():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.5")
+root.title("Aurora Homebrew GUI v1.4.6")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
