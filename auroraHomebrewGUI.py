@@ -36,20 +36,7 @@ def save_spell():
         with open(f"{output_path.get()}\\spells.xml", "a") as file:
             file.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n")
             file.write("<elements>\n")
-    spellSource_sanitized = spellSource_entry.get()
-    spellSource_sanitized = spellSource_sanitized.replace(" ", "_")
-    spellSource_sanitized = spellSource_sanitized.replace("\'", "")
-    spellSource_sanitized = spellSource_sanitized.upper()
-    spellName_sanitized = spellName_entry.get()
-    spellName_sanitized = spellName_sanitized.replace(" ", "_")
-    spellName_sanitized = spellName_sanitized.replace("\'", "")
-    spellName_sanitized = spellName_sanitized.upper()
-    spellAuthor_sanitized = spellAuthor_entry.get()
-    if spellAuthor_sanitized != "":
-        spellAuthor_sanitized = spellAuthor_sanitized + "_"
-        spellAuthor_sanitized = spellAuthor_sanitized.replace(" ", "_")
-        spellAuthor_sanitized = spellAuthor_sanitized.replace("\'", "")
-        spellAuthor_sanitized = spellAuthor_sanitized.upper()
+    spellAuthor_sanitized, spellSource_sanitized, spellName_sanitized = spell_id_sanitizer()
     spellDescription_sanitized = spellDescription_entry.get('1.0', 'end-1c')
     spellDescription_sanitized = spellDescription_sanitized.replace("\n", "</p>\n\t\t\t<p>")
     with open(f"{output_path.get()}\\spells.xml", "a", encoding="utf-8") as file:
@@ -80,6 +67,24 @@ def save_spell():
         file.write("\t\t</setters>\n")
         file.write("\t</element>\n")
         file.write("</elements>")
+
+# Function to sanitize spell author, source, and name
+def spell_id_sanitizer():
+    spellSource_sanitized = spellSource_entry.get()
+    spellSource_sanitized = spellSource_sanitized.replace(" ", "_")
+    spellSource_sanitized = spellSource_sanitized.replace("\'", "")
+    spellSource_sanitized = spellSource_sanitized.upper()
+    spellName_sanitized = spellName_entry.get()
+    spellName_sanitized = spellName_sanitized.replace(" ", "_")
+    spellName_sanitized = spellName_sanitized.replace("\'", "")
+    spellName_sanitized = spellName_sanitized.upper()
+    spellAuthor_sanitized = spellAuthor_entry.get()
+    if spellAuthor_sanitized != "":
+        spellAuthor_sanitized = spellAuthor_sanitized + "_"
+        spellAuthor_sanitized = spellAuthor_sanitized.replace(" ", "_")
+        spellAuthor_sanitized = spellAuthor_sanitized.replace("\'", "")
+        spellAuthor_sanitized = spellAuthor_sanitized.upper()
+    return spellAuthor_sanitized, spellSource_sanitized, spellName_sanitized
 
 # Function to enable/disable "add spell" button
 def update_saveSpell_button_state():
@@ -138,9 +143,16 @@ def select_folder():
     folder_path_label.config(text=output_path)
     update_saveSpell_button_state()
 
+# Function to update the spell ID display
+def spell_id_update():
+    spellAuthor_sanitized, spellSource_sanitized, spellName_sanitized = spell_id_sanitizer()
+    spellid = "ID_" + spellAuthor_sanitized + spellSource_sanitized + "_SPELL_" + spellName_sanitized
+    if spellSource_sanitized != "" and spellName_sanitized !="":
+        iddisplay_label.config(text=spellid)
+
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.4.7")
+root.title("Aurora Homebrew GUI v1.5.0")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -165,8 +177,9 @@ source_exists = tk.IntVar()
 level = tk.IntVar()
 level.set(0)
 
-# Create a StringVar to store the output folder path
+# Create a StringVar to store the output folder path and spell ID
 output_path = tk.StringVar()
+spellid = tk.StringVar()
 
 # Create the Notebook and its frames
 notebook = ttk.Notebook(root)
@@ -181,20 +194,28 @@ name_label = ttk.Label(spellCore, text="Name")
 name_label.grid(row=0, column=0, sticky="w")
 spellName_entry = ttk.Entry(spellCore)
 spellName_entry.grid(row=0, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-spellName_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+spellName_entry.bind("<KeyRelease>", lambda event: [update_saveSpell_button_state(), spell_id_update()])
+
+# Spell ID Display
+idexplanation_label = ttk.Label(spellCore, text="Spell ID will be:")
+idexplanation_label.grid(row=0, column=3, sticky="w")
+spellid = ""
+iddisplay_label = ttk.Label(spellCore, textvariable=spellid)
+iddisplay_label.grid(row=0, column=4, sticky="w")
 
 # Source Entry
 source_label = ttk.Label(spellCore, text="Source")
 source_label.grid(row=1, column=0, sticky="w")
 spellSource_entry = ttk.Entry(spellCore)
 spellSource_entry.grid(row=1, column=1, columnspan=2, padx=10, pady=5, sticky="w")
-spellSource_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+spellSource_entry.bind("<KeyRelease>", lambda event: [update_saveSpell_button_state(), spell_id_update()])
 
 # Author entry
 author_label = ttk.Label(spellCore, text="Author (optional)")
 author_label.grid(row=1, column=3, sticky="w")
 spellAuthor_entry = ttk.Entry(spellCore)
 spellAuthor_entry.grid(row=1, column=4, columnspan=2, padx=10, pady=5, sticky="w")
+spellAuthor_entry.bind("<KeyRelease>", lambda event: spell_id_update())
 
 # Checkboxes for Classes
 classes_label = ttk.Label(spellCore, text="Classes")
@@ -268,15 +289,15 @@ range_entry = ttk.Entry(spellCore)
 range_entry.grid(row=9, column=1, columnspan=2, padx=10, pady=5, sticky="w")
 range_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
-# Verbal, Somatic, and Material Checkboxes
+# Spell component checkboxes
+component_label = ttk.Label(spellCore, text="Components")
+component_label.grid(row=10, column=0, sticky="w")
 verbal_checkbox = ttk.Checkbutton(spellCore, text="Verbal", variable=verbal)
-verbal_checkbox.grid(row=10, column=0, sticky="w")
-
+verbal_checkbox.grid(row=10, column=1, sticky="w")
 somatic_checkbox = ttk.Checkbutton(spellCore, text="Somatic", variable=somatic)
-somatic_checkbox.grid(row=10, column=1, sticky="w")
-
+somatic_checkbox.grid(row=10, column=2, sticky="w")
 material_checkbox = ttk.Checkbutton(spellCore, text="Material", variable=material, command=update_materialSpell_entry_state)
-material_checkbox.grid(row=10, column=2, sticky="w")
+material_checkbox.grid(row=10, column=3, sticky="w")
 
 # Material Component Entry
 material_component_label = ttk.Label(spellCore, text="Material Component")
@@ -319,7 +340,7 @@ header_button.grid(row=2, column=0, columnspan=3, pady=10)
 default_font = tkFont.nametofont("TkDefaultFont")
 italicized_font = default_font.copy()
 italicized_font.configure(slant="italic")
-header_warning_label = ttk.Label(spellHeader, text="This header is only for online homebrew!", font=italicized_font, foreground="red")
+header_warning_label = ttk.Label(spellHeader, text="This header is only used for online homebrew!", font=italicized_font, foreground="red")
 header_warning_label.grid(row=2, column=3, sticky="w")
 
 # Start the main loop
