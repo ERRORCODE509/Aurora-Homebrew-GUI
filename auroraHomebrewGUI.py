@@ -153,11 +153,11 @@ def spell_id_update():
 
 # Display description help box
 def description_help():
-    messagebox.showinfo("Description Help", "The description (from what it seems) accepts basic HTML tags, including but not limited to the following:\n<i></i>, <em></em> - Italics\n<b></b>, <strong></strong> - Bold\n<p></p> - Line break (the program will do this for you)\n\nIndents can be added by including class=\"indent\" in the <p> tag, though you'll have to add this yourself.")
+    messagebox.showinfo("Description Help", "The description (from what it seems) accepts basic HTML tags, including but not limited to the following:\n\n<i></i>, <em></em> - Italics\n<b></b>, <strong></strong> - Bold\n<p></p> - Line break (the program will do this for you)\n <h1> through <h6> - Supports h1 through h6 HTML tags, for larget/smaller text\n\nIndents can be added by including class=\"indent\" in the <p> tag, though you'll have to add this yourself.\n\nTables can also be added, but I'd suggest using an existing table as a template. The formatting isn't the most intuitive.")
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.5.0")
+root.title("Aurora Homebrew GUI v1.6.0")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
