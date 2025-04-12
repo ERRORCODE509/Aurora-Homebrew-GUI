@@ -3,6 +3,7 @@ from tkinter import ttk
 import os
 import tkinter.font as tkFont
 from tkinter import filedialog
+from tkinter import messagebox
 import xml.etree.ElementTree as ET
 
 # Function to add spells. Should probably break this up to make it less of a monolithic mess.
@@ -150,6 +151,10 @@ def spell_id_update():
     if spellSource_sanitized != "" and spellName_sanitized !="":
         iddisplay_label.config(text=spellid)
 
+# Display description help box
+def description_help():
+    messagebox.showinfo("Description Help", "The description (from what it seems) accepts basic HTML tags, including but not limited to the following:\n<i></i>, <em></em> - Italics\n<b></b>, <strong></strong> - Bold\n<p></p> - Line break (the program will do this for you)\n\nIndents can be added by including class=\"indent\" in the <p> tag, though you'll have to add this yourself.")
+
 # Create the main window
 root = tk.Tk()
 root.title("Aurora Homebrew GUI v1.5.0")
@@ -244,6 +249,10 @@ description_label.grid(row=3, column=0, sticky="w")
 spellDescription_entry = tk.Text(spellCore, height=5, width=40)
 spellDescription_entry.grid(row=3, column=1, columnspan=3, padx=10, pady=5, sticky="w")
 spellDescription_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
+
+# Description help dialogue
+descriptionhelp_button = ttk.Button(spellCore, text="?", command=description_help, width=3)
+descriptionhelp_button.grid(row=3, column=4, pady=10)
 
 # Level Slider
 level_label = ttk.Label(spellCore, text="Level")
