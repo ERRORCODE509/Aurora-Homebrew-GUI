@@ -157,7 +157,7 @@ def description_help():
 
 # Create the main window
 root = tk.Tk()
-root.title("Aurora Homebrew GUI v1.6.0")
+root.title("Aurora Homebrew GUI v1.6.1")
 
 # Create variables for checkboxes
 artificer = tk.IntVar()
@@ -276,12 +276,13 @@ casting_time_entry.grid(row=6, column=1, columnspan=2, padx=10, pady=5, sticky="
 casting_time_entry.bind("<KeyRelease>", lambda event: update_saveSpell_button_state())
 
 # Concentration and Ritual Checkboxes
+casting_label = ttk.Label(spellCore, text="Casting")
+casting_label.grid(row=7, column=0, sticky="w")
 concentration_checkbox = ttk.Checkbutton(spellCore, text="Concentration", variable=concentration)
-concentration_checkbox.grid(row=7, column=0, sticky="w")
+concentration_checkbox.grid(row=7, column=1, sticky="w")
 concentration_checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
-
 ritual_checkbox = ttk.Checkbutton(spellCore, text="Ritual", variable=ritual)
-ritual_checkbox.grid(row=7, column=1, sticky="w")
+ritual_checkbox.grid(row=7, column=2, sticky="w")
 ritual_checkbox.bind("<ButtonRelease-1>", lambda event: update_saveSpell_button_state())
 
 # Duration Entry
