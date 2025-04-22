@@ -1,9 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
 import os
 import tkinter.font as tkFont
-from tkinter import filedialog
-from tkinter import messagebox
 import xml.etree.ElementTree as ET
 
 # Function to add spells. Should probably break this up to make it less of a monolithic mess.
